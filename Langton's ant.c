@@ -1,17 +1,20 @@
-//Developed By Kushal Pathak
-#include<stdio.h>
-#include<conio.h>
-#include<stdlib.h>
-#define h 25
-#define w 25
+// Developed By Kushal Pathak
+
+#include <stdio.h>
+#include <conio.h>
+#include <stdlib.h>
+#include <windows.h>
+#define h 49
+#define w 49 // change w to 105 to use full width of console
 #define black 'X'
 #define white ' '
 
-char ant='^';
-int x=12, y=12, dir=1, step=25;
-float speed=0.1;
+char ant = '^';
+int x = w / 2, y = h / 2, dir = 1, step = 25;
+float speed = 0.1;
 char matrix[h][w];
 
+void maximizeWindow();
 void init();
 void display();
 int turnRight();
@@ -25,15 +28,18 @@ void turn();
 void checkBoundary();
 void menu();
 
-void main(){
+void main()
+{
+	maximizeWindow();
 	system("cls");
 	init();
-	int i=0;
+	int i = 0;
 	char ch;
 	menu();
-	while(i<=step){
+	while (i <= step)
+	{
 		display();
-		printf("------------------Step %d------------------",i);
+		printf("------------------Step %d------------------", i);
 		turn();
 		flipColor();
 		moveForward();
@@ -42,82 +48,155 @@ void main(){
 	}
 	getch();
 }
-void turn(){
-	if(color(x,y)==white) turnRight();
-	else turnLeft();
+void turn()
+{
+	if (color(x, y) == white)
+		turnRight();
+	else
+		turnLeft();
 }
-void moveForward(){
-	switch(dir){
-		case 1: y--; checkBoundary(); break;
-		case 2: x++; checkBoundary(); break;
-		case 3: y++; checkBoundary(); break;
-		case 4: x--; checkBoundary(); break;
+void moveForward()
+{
+	switch (dir)
+	{
+	case 1:
+		y--;
+		checkBoundary();
+		break;
+	case 2:
+		x++;
+		checkBoundary();
+		break;
+	case 3:
+		y++;
+		checkBoundary();
+		break;
+	case 4:
+		x--;
+		checkBoundary();
+		break;
 	}
 }
 
-void flipColor(){
-	if(color(x,y)==black) setColor(white);
-	else setColor(black);
+void flipColor()
+{
+	if (color(x, y) == black)
+		setColor(white);
+	else
+		setColor(black);
 }
-char color(){
-	if(matrix[y][x]==black) return black;
+char color()
+{
+	if (matrix[y][x] == black)
+		return black;
 	return white;
 }
-void setColor(char color){
-	matrix[y][x]=color;
+void setColor(char color)
+{
+	matrix[y][x] = color;
 }
-int turnRight(){
-	switch(dir){
-		case 1: dir = 2; ant='>'; break;
-		case 2: dir = 3; ant='v'; break;
-		case 3: dir = 4; ant='<'; break;
-		case 4: dir = 1; ant='^';break;
+int turnRight()
+{
+	switch (dir)
+	{
+	case 1:
+		dir = 2;
+		ant = '>';
+		break;
+	case 2:
+		dir = 3;
+		ant = 'v';
+		break;
+	case 3:
+		dir = 4;
+		ant = '<';
+		break;
+	case 4:
+		dir = 1;
+		ant = '^';
+		break;
 	}
 }
-int turnLeft(){
-	switch(dir){
-		case 4: dir = 3; ant='v'; break;
-		case 3: dir = 2; ant='>'; break;
-		case 2: dir = 1; ant='^'; break;
-		case 1: dir = 4; ant='<';break;
+int turnLeft()
+{
+	switch (dir)
+	{
+	case 4:
+		dir = 3;
+		ant = 'v';
+		break;
+	case 3:
+		dir = 2;
+		ant = '>';
+		break;
+	case 2:
+		dir = 1;
+		ant = '^';
+		break;
+	case 1:
+		dir = 4;
+		ant = '<';
+		break;
 	}
 }
-void display(){
+void display()
+{
 	system("cls");
 	int i, j;
-	for(i=0;i<h;i++){
+	for (i = 0; i < h; i++)
+	{
+		for (j = 0; j < w; j++)
+		{
+			if (i == y && j == x)
+				printf("%c ", ant);
+			else
+				printf("%c ", matrix[i][j]);
+		}
 		printf("\n");
-		for(j=0;j<w;j++){
-			if(i==y&&j==x) printf("%c ",ant);
-			else printf("%c ",matrix[i][j]);
-		}	
 	}
-	printf("\n");
+	// printf("\n");
 }
-void checkBoundary(){
-	if(x>=w) x=0;
-	if(x<0) x=w-1;
-	if(y>=h) y=0;
-	if(y<0) y=h-1;
+void checkBoundary()
+{
+	if (x >= w)
+		x = 0;
+	if (x < 0)
+		x = w - 1;
+	if (y >= h)
+		y = 0;
+	if (y < 0)
+		y = h - 1;
 }
-void delay(float n){
+void delay(float n)
+{
 	int i, j, k;
-	for(i=0; i<100; i++){
-		for(j=0; j<1000; j++)
-			for(k=0; k<n*50; k++);
+	for (i = 0; i < 100; i++)
+	{
+		for (j = 0; j < 1000; j++)
+			for (k = 0; k < n * 50; k++)
+				;
 	}
 }
-void init(){
+void init()
+{
 	int i, j;
-	for(i=0;i<h;i++){
-		for(j=0;j<w;j++)
-			matrix[i][j]=white;
+	for (i = 0; i < h; i++)
+	{
+		for (j = 0; j < w; j++)
+			matrix[i][j] = white;
 	}
 }
-void menu(){
+void menu()
+{
 	printf("Langton's Ant by Kushal Pathak\n");
-	printf("Enter speed (Eg: 50): ");
-	scanf("%f",&speed);
-	printf("Enter steps: ");
-	scanf("%d",&step);
+	printf("Enter speed (Eg:- 1): ");
+	scanf("%f", &speed);
+	printf("Enter steps(Eg:- 360): ");
+	scanf("%d", &step);
+}
+
+void maximizeWindow()
+{
+	HWND hwnd = GetConsoleWindow();
+	ShowWindow(hwnd, SW_SHOWMAXIMIZED);
 }
